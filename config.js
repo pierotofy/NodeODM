@@ -34,6 +34,8 @@ Options:
 	--parallel_queue_processing <number> Number of simultaneous processing tasks (default: 2)
 	--cleanup_tasks_after <number> Number of days that elapse before deleting finished and canceled tasks (default: 3) 
 	--test Enable test mode. In test mode, no commands are sent to OpenDroneMap. This can be useful during development or testing (default: false)
+	--recreate_api_token 	Creates a new API token for authentication, replacing the old one (default: false)
+	--require_api_token 	Requires all API calls to provide an authentication token (default: false)   
 Log Levels: 
 error | debug | info | verbose | debug | silly 
 `);
