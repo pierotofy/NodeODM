@@ -1,4 +1,5 @@
-FROM pierotofy/odm:latest
+ARG FROM_REPO=
+FROM ${FROM_REPO}
 MAINTAINER Piero Toffanin <pt@masseranolabs.com>
 
 EXPOSE 3000

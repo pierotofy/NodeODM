@@ -32,7 +32,7 @@ jobs:
       id: docker_meta
       uses: crazy-max/ghaction-docker-meta@v1
       with:
-        images: pierotofy/nodeodm
+        images: ${{secrets.DOCKERHUB_REPO}}
         tag-semver: |
           {{version}}
     - name: Build and push Docker image
@@ -42,6 +42,8 @@ jobs:
         file: ./Dockerfile
         platforms: linux/amd64,linux/arm64
         push: true
+        build-args: |
+          FROM_REPO=${{secrets.FROM_REPO}}
         tags: |
           ${{ steps.docker_meta.outputs.tags }}
-          pierotofy/nodeodm:latest
+          ${{secrets.DOCKERHUB_REPO}}:latest
