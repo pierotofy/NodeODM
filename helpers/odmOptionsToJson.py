@@ -35,17 +35,22 @@ def load_source(module_name, filename):
 dest_file = os.environ.get("ODM_OPTIONS_TMP_FILE")
 
 sys.path.append(sys.argv[2])
+config = None
 
-try:
-    load_source('opendm', sys.argv[2] + '/opendm/__init__.py')
-except:
-    pass
-try:
-    load_source('context', sys.argv[2] + '/opendm/context.py')
-except:
-    pass
-odm = load_source('config', sys.argv[2] + '/opendm/config.py')
-
+for module_dir in ["modules", "opendm"]:
+    if os.path.isdir(os.path.join(sys.argv[2], module_dir)):
+        try:
+            load_source(module_dir, sys.argv[2] + f"/{module_dir}/__init__.py")
+        except:
+            pass
+        try:
+            load_source('context', sys.argv[2] + f"/{module_dir}/context.py")
+        except:
+            pass
+        config = load_source('config', sys.argv[2] + f"/{module_dir}/config.py")
+        
+        break
+    
 options = {}
 class ArgumentParserStub(argparse.ArgumentParser):
 	def add_argument(self, *args, **kwargs):
@@ -57,13 +62,13 @@ class ArgumentParserStub(argparse.ArgumentParser):
 	def add_mutually_exclusive_group(self):
 		return ArgumentParserStub()
 
-if not hasattr(odm, 'parser'):
+if not hasattr(config, 'parser'):
     # ODM >= 2.0
-    odm.config(parser=ArgumentParserStub())
+    config.config(parser=ArgumentParserStub())
 else:
     # ODM 1.0
-    odm.parser = ArgumentParserStub()
-    odm.config()
+    config.parser = ArgumentParserStub()
+    config.config()
     
 out = json.dumps(options)
 print(out)
